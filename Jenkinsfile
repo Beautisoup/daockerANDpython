@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // 构建 Docker 镜像
-                    docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+                    bat "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     // 登录 Docker Hub
-                    sh "echo ${DOCKER_HUB_CREDENTIALS_PSW} | docker login -u ${DOCKER_HUB_CREDENTIALS_USR} --password-stdin"
+                    bat "echo ${DOCKER_HUB_CREDENTIALS_PSW} | docker login -u ${DOCKER_HUB_CREDENTIALS_USR} --password-stdin"
                 }
             }
         }
@@ -41,7 +41,7 @@ pipeline {
     post {
         always {
             // 清理 Docker 登录信息
-            sh 'docker logout'
+            bat 'docker logout'
         }
     }
 }
